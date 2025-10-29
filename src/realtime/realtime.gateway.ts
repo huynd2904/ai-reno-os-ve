@@ -9,6 +9,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @WebSocketGateway({
   cors: {
@@ -24,16 +25,24 @@ export class RealtimeGateway implements OnGatewayConnection, OnGatewayDisconnect
 
   private connectedClients = new Map<string, Socket>();
 
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
 
-  handleConnection(client: Socket) {
+    private readonly jwtService: JwtService,
+    private readonly config: ConfigService,
+  ) {}
+
+  async handleConnection(client: Socket) {
     try {
       const accessToken = client.handshake.auth.token || client.handshake.query.token;
       if (!accessToken) {
         throw new UnauthorizedException('No access token provided');
       }
 
-      const payload  = this.jwtService.decode(accessToken) as any;
+      const payload = await this.jwtService.verifyAsync(accessToken, {
+        secret: this.config.get<string>('JWT_SECRET'),
+        ignoreExpiration: true,
+      });
+
       if (!payload ?.sub) {
         throw new BadRequestException('Invalid access token');
       }
@@ -50,7 +59,7 @@ export class RealtimeGateway implements OnGatewayConnection, OnGatewayDisconnect
     }
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
     this.connectedClients.delete(client.id);
   }

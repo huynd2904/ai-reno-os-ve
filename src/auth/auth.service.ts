@@ -149,7 +149,12 @@ export class AuthService {
       if (!accessToken || !refreshToken)
         throw new BadRequestException('Missing required fields');
 
-      const decoded = this.jwtService.decode(accessToken) as any;
+      // const decoded = this.jwtService.decode(accessToken) as any;
+      const decoded = await this.jwtService.verifyAsync(accessToken, {
+        secret: this.config.get<string>('JWT_SECRET'),
+        ignoreExpiration: true,
+      });
+
       if (!decoded?.sub) {
         throw new BadRequestException('Invalid access token');
       }
