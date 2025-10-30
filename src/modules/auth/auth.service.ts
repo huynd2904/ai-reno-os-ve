@@ -8,11 +8,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/user.entity';
 import { ILike, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import { SignUpDto } from './dto/sign-up.dto';
+import { SignUpDto } from '../../models/auth/dto/sign-up.dto';
 import { ConfigService } from '@nestjs/config';
 import { RefreshToken } from '../refresh-token/refresh-token.entity';
 import { randomBytes } from 'crypto';
-import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { RefreshTokenDto } from '../../models/auth/dto/refresh-token.dto';
 
 @Injectable()
 export class AuthService {

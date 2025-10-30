@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RealtimeService } from './realtime/realtime.service';
+import { RealtimeService } from './modules/realtime/realtime.service';
 
 @Injectable()
 export class AppService {

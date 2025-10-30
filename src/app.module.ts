@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
-import { User } from './user/user.entity';
-import { RefreshTokenModule } from './refresh-token/refresh-token.module';
-import { RefreshToken } from './refresh-token/refresh-token.entity';
-import { RealtimeGateway } from './realtime/realtime.gateway';
+import { UserModule } from './modules/user/user.module';
+import { User } from './modules/user/user.entity';
+import { RefreshTokenModule } from './modules/refresh-token/refresh-token.module';
+import { RefreshToken } from './modules/refresh-token/refresh-token.entity';
+import { RealtimeGateway } from './modules/realtime/realtime.gateway';
 import { JwtService } from '@nestjs/jwt';
-import { RealtimeModule } from './realtime/realtime.module';
+import { RealtimeModule } from './modules/realtime/realtime.module';
+import { RoleGuard } from './common/guards/role.guard';
 
 @Module({
   imports: [
@@ -37,9 +38,9 @@ import { RealtimeModule } from './realtime/realtime.module';
     AuthModule,
     UserModule,
     RefreshTokenModule,
-    RealtimeModule
+    RealtimeModule,
   ],
   controllers: [AppController],
-  providers: [AppService,RealtimeGateway, JwtService],
+  providers: [AppService,RealtimeGateway, JwtService, RoleGuard],
 })
 export class AppModule {}

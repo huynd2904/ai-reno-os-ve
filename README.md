@@ -42,7 +42,7 @@ $ npm install
 
 ```bash
 # generate migrations
-$ npm run migration:generate ./src/migrations/<migration-name>
+$ npm run migration:generate ./src/database/migrations/<migration-name>
 
 # run migrations
 $ npm run migration:run

@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { ApiResponseInterceptor } from './common/interceptors/api-response.interceptor';
 import { ApiExceptionFilter } from './common/filters/api-exception.filter';
-
+import { runSeed } from './database/seed';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
@@ -53,6 +53,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, documentConfig);
   SwaggerModule.setup('api', app, document);
 
+  await runSeed();
   await app.listen(config.get<number>('PORT') ?? 5000);
   console.log(`🚀 AiRenoOS Engine is running on: ${config.get<string>('JWT_AUDIENCE')}/api`);
 }

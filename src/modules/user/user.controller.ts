@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { PaginatedResult } from '../common/models/paginated-result';
+import { PaginatedResult } from '../../common/models/paginated-result';
 import { User } from './user.entity';
 
 @Controller('user')

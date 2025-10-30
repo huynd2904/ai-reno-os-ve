@@ -3,8 +3,8 @@ import { DataSource } from 'typeorm';
 import { join } from 'path';
 
 import * as dotenv from 'dotenv';
-import { User } from './user/user.entity';
-import { RefreshToken } from './refresh-token/refresh-token.entity';
+import { User } from './modules/user/user.entity';
+import { RefreshToken } from './modules/refresh-token/refresh-token.entity';
 dotenv.config();
 
 export const AppDataSource = new DataSource({
@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || '',
   entities: [User, RefreshToken],
-  migrations: [join(__dirname, '/migrations/*.{ts,js}')],
+  migrations: [join(__dirname, '/database/migrations/*.{ts,js}')], //path to migration files
   synchronize: false,
   logging: true,
 });

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { PaginatedResult } from '../common/models/paginated-result';
+import { PaginatedResult } from '../../common/models/paginated-result';
 
 @Injectable()
 export class UserService {
@@ -16,5 +16,9 @@ export class UserService {
   async getPagedUsers(page = 1, size = 10): Promise<PaginatedResult<User>> {
     const query = this.userRepo.createQueryBuilder('user').orderBy('user.createdAt', 'DESC');
     return PaginatedResult.fromQuery<User>(query, page, size);
+  }
+
+  async getUserById(id: string) : Promise<User | null>{
+   return await this.userRepo.findOne({where:{id}});
   }
 }
